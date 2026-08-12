@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = require("../config.js");
 const bcrypt = require("bcrypt");
 const { User } = require("../db.js");
+const  {authMiddleware}=require("../middleware.js")
 
 // Signup schema
 const signupSchema = z.object({
@@ -19,6 +20,7 @@ router.post("/signup", async (req, res) => {
     const body = req.body;
 
     const { success } = signupSchema.safeParse(body);
+    console.log(success)
 
     if (!success) {
         return res.status(400).json({
@@ -95,5 +97,67 @@ router.post("/signin", async (req, res) => {
         token: token,
     });
 });
+
+//update route
+const updatebody=z.object({
+    password:z.string().optional(),
+    firstName:z.string().optional(),
+    lastName:z.string().optional()
+})
+router.put("/update",authMiddleware,async(req,res)=>{
+    try{
+       
+
+        const {success}= updatebody.safeParse(req.body)
+        console.log("after success")
+    if(!success) {
+        console.log("inside if block")
+        res.status(411).json({
+            message:"error while updating"
+        })
+    }
+   
+
+    await User.updateOne({_id:req.userId},req.body);
+
+    res.json({
+        message:"updated successfully"
+    })
+}
+catch(error){
+    console.log("erorrrrr")
+    res.status(500).send(error)
+}
+})
+//route to filter using firstname or lastname
+router.get("/filter",async(req,res)=>{
+    const filter=req.query.filter||"";
+    const users= await User.find({
+        $or:[{
+            firstName:{
+                "$regex":filter
+            },},{
+                lastName:{
+                "$regex":filter
+
+
+                
+                }
+            }]
+        
+})
+
+    res.json({
+        user:users.map(user=>({
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            _id: user._id
+        }))
+    })
+})
+
+
+
 
 module.exports = router;
