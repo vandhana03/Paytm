@@ -97,6 +97,7 @@ router.post("/signin", async (req, res) => {
         token: token,
     });
 });
+console.log("testing")
 
 //update route
 const updatebody=z.object({
