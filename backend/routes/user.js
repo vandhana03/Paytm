@@ -6,6 +6,7 @@ const JWT_SECRET = require("../config.js");
 const bcrypt = require("bcrypt");
 const { User } = require("../db.js");
 const  {authMiddleware}=require("../middleware.js")
+const {Account}=require("../db.js")
 
 // Signup schema
 const signupSchema = z.object({
@@ -45,6 +46,10 @@ router.post("/signup", async (req, res) => {
         ...body,
         password: hashedPassword,
     });
+    await Account.create({
+        userId:dbUser._id,
+        balance:1+Math.random()*10000
+    })
 
     const token = jwt.sign(
         {
