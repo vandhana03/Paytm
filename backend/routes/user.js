@@ -21,7 +21,7 @@ router.post("/signup", async (req, res) => {
     const body = req.body;
 
     const { success } = signupSchema.safeParse(body);
-    console.log(success)
+    // console.log(success)
 
     if (!success) {
         return res.status(400).json({
@@ -102,7 +102,6 @@ router.post("/signin", async (req, res) => {
         token: token,
     });
 });
-console.log("testing")
 
 //update route
 const updatebody=z.object({
@@ -115,9 +114,7 @@ router.put("/update",authMiddleware,async(req,res)=>{
        
 
         const {success}= updatebody.safeParse(req.body)
-        console.log("after success")
     if(!success) {
-        console.log("inside if block")
         res.status(411).json({
             message:"error while updating"
         })
@@ -131,7 +128,6 @@ router.put("/update",authMiddleware,async(req,res)=>{
     })
 }
 catch(error){
-    console.log("erorrrrr")
     res.status(500).send(error)
 }
 })
