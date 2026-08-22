@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom"
-import { de } from "zod/locales"
 
 function BottomWarning({label, buttonText, to}) {
     return <div className="py-2 text-sm flex justify-center">
