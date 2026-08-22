@@ -11,7 +11,7 @@ const Dashboard = () => {
         const fetchBalance = async () => {
             try {
                 const response = await axios.get(
-                    "http://localhost:3000/api/v1/account/balance",
+                    "https://paytm-y8gl.onrender.com/api/v1/account/balance",
                     {
                         headers: {
                             Authorization:

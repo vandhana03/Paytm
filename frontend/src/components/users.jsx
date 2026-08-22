@@ -7,7 +7,7 @@ function Users(){
     const [users,setUsers]=useState([]);
     const [filter,setFilter]=useState("");
     useEffect(()=>{
-        axios.get("http://localhost:3000/api/v1/user/filter?filter=" +filter)
+        axios.get("https://paytm-y8gl.onrender.com/api/v1/user/filter?filter=" +filter)
         .then((res)=>{
             setUsers(res.data.user);
             console.log(res.data.user);
